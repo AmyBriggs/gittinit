@@ -16,7 +16,7 @@ const routes = require(`./routes/index`);
 const users = require(`./routes/users`);
 
 const app = express();
-// const GitHubApi = require(`github`);
+
 
 // view engine setup
 app.set(`views`, path.join(__dirname, `views`));
@@ -31,41 +31,6 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, `public`)));
-
-
-
-// const github = new GitHubApi({
-//   debug: true,
-//   protocol: `https`,
-//   host: `api.github.com`,
-//   header: {
-//     'user-agent': `gittinit`,
-//   },
-//   followRedirects: false,
-//   timeout: 5000,
-// });
-//
-// github.authenticate({
-//   type: `oauth`,
-//   key: process.env.CLIENT_ID,
-//   secret: process.env.CLIENT_SECRET,
-// });
-//
-// github.authorization.create({
-//   scopes: [`user`, `public_repo`, `repo`, `repo:status`, `gist`],
-//   note: `access needed to show your peer repos`,
-//   note_url: `https://gittinit.herokuapp.com`,
-  // headers: {
-  //   'X-GitHub-OTP': `two-factor-code`,
-  // },
-// }, (err, res) => {
-//   if (err) {
-//     console.error(err);
-//   }
-//   if (res.token) {
-//     console.log(res.token);
-//   }
-// });
 
 app.use(`/`, routes);
 app.use(`/users`, users);
