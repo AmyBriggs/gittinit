@@ -19,6 +19,7 @@ module.exports = {
     "one-var-declaration-per-line": ["error", "initializations"],
     "one-var": ["error", { "initialized": "never" }],
     "no-unused-expressions": ["error", { "allowTernary": true }],
-    "max-params": ["error", 4]
+    "max-params": ["error", 4],
+    "comma-dangle": ["error", "always-multiline"]
   }
 };
