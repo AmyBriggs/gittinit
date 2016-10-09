@@ -12,6 +12,7 @@ const logger = require(`morgan`);
 const passport = require(`passport`);
 const session = require(`express-session`);
 const GitHubStrategy = require(`passport-github2`).Strategy;
+const db = require(`./db/api`);
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -40,9 +41,22 @@ passport.use(new GitHubStrategy({
 (accessToken, refreshToken, profile, done) => {
   // asynchronous verification, for effect...
   process.nextTick(() => {
-    console.log(`accesssToken: ${accessToken}`);
-    console.log(`refreshToken: ${refreshToken}`);
-    console.log(`profile: ${profile}`);
+    // console.log(`accesssToken: ${accessToken}`);
+    // console.log(`refreshToken: ${refreshToken}`);
+    // console.log(`profile: ${profile}`);
+    db.getUser(profile.username).then((user) => {
+      if (user) {
+        db.editUser(profile.username, accessToken)
+        .then()
+        .catch((err) => console.error(err));
+      }
+      else {
+        db.createUser(profile.username, accessToken)
+        .then()
+        .catch((e) => console.error(e));
+      }
+    })
+    .catch((error) => console.error(error));
 
     // To keep the example simple, the user's GitHub profile is returned to
     // represent the logged-in user.  In a typical application, you would want
