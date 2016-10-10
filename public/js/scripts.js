@@ -26,7 +26,7 @@ const updateProfileListener = () => {
       url: `/edit`,
     })
     .done(() => {
-      window.location = `/profile`;  // redirect when finished!
+      window.location = `/`;  // redirect when finished!
     });
   });
 };
