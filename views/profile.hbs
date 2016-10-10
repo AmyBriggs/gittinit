@@ -1,8 +1,6 @@
-<profile class="row">
   <left class="col s2">
-    <h3 class="center-align">Welcome!</h3>
+    <h3 class="center-align"><a href={{user.profileUrl}}>{{user.username}}</a></h3>
     <img class="responsive-img" src={{user._json.avatar_url}} />
-    <p><a href={{user.profileUrl}}>{{user.username}}</a></p>
     <p>Display Name: {{user._json.name}}</p>
     <p>Located In: {{user._json.location}}</p>
     <p>Company: {{user._json.company}}</p>
@@ -11,8 +9,6 @@
     &nbsp;&nbsp;Private: {{user._json.total_private_repos}}</p>
     <p><a href={{user.profileUrl}}?tab=followers>Followers: </a>{{user._json.followers}}</p>
     <p><a href={{user.profileUrl}}?tab=following>Following: </a>{{user._json.following}}</p>
-    <a class="waves-effect waves-light btn" id="edit-profile"><i class="material-icons right">mode_edit</i>Edit</a>
   </left>
   <right class="col s10">
   </right>
-</profile>

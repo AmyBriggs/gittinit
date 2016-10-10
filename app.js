@@ -114,7 +114,7 @@ app.get(`/`, (req, res) => {
 });
 
 app.get(`/profile`, ensureAuthenticated, (req, res) => {
-  res.render(`profile`, { user: req.user });
+  res.render(`profile`, { /* TODO */ });
 });
 
 app.get(`/edit`, (req, res) => {
