@@ -21,8 +21,15 @@ const editUser = (username, token) => {
   .update(`token`, token);
 };
 
+const deleteUser = (username) => {
+  return knex(`users`)
+  .where(`username`, username)
+  .del();
+};
+
 module.exports = {
   createUser,
+  deleteUser,
   editUser,
   getUser,
 };

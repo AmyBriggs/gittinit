@@ -142,6 +142,9 @@ app.get(`/auth/github/callback`,
   });
 
 app.get(`/logout`, (req, res) => {
+  db.deleteUser(req.user.username)
+  .then()
+  .catch((error) => console.error(error));
   req.logout();
   res.redirect(`/`);
 });
