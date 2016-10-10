@@ -1,20 +1,19 @@
 'use strict';
 
-
-
-console.log('hi');
-
-
-
-
 $(document).ready(() => {
-  $('#login-button').click(function() {
-    console.log('clicked');
+  $(`#login-button`).click(function() {
+    console.log(`clicked`);
+    $(`#login-button`).addClass(`active`);
     window.location.href = `http://localhost:3000/auth/github`;
   });
-  $('#logout-button').click(function() {
-    console.log('clicked');
+
+  if ($(`#login-button`).hasClass(`active`)) {
+    $(`login-button`).addClass(`hidden`);
+    $(`logout-button`).removeClass(`hidden`);
+  }
+
+  $(`#logout-button`).click(function() {
+    console.log(`clacked`);
     window.location.href = `http://localhost:3000/logout`;
   });
-
-})
+});
