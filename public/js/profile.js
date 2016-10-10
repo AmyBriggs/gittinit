@@ -3,16 +3,19 @@
 $(document).ready(() => {
   console.log("i am here");
 
-  $.ajax({
+  const username = `mrcooper42`
+
+  const repos = $.ajax({
     dataType: `json`,
-    url: `https://api.github.com/users/mrcooper42/repos`,
+    url: `https://api.github.com/users/` + username + `/repos`,
     success: (returndata) => {
+
       console.log(`I was loaded`, returndata);
     },
   });
 
-
-
+  //
+  //
   //   jQuery.githubUser = (username, callback) => {
   //     jQuery.getJSON(`https://api.github.com/users/` + username + `/repos?callback=?`, callback)
   //   }
@@ -37,6 +40,6 @@ $(document).ready(() => {
   //
   //     const sortByName = (repos) => {
   //       repos.sort((a, b) => a.name - b.name);
-  //     }
+  //     };
   //   };
 });
