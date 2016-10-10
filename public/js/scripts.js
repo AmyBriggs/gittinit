@@ -1,8 +1,33 @@
 'use strict';
 
+// edit button clicked!
 const editProfileListener = () => {
   $(`#edit-profile`).click((e) => {
-    console.log(e);
+    window.location.href = `/edit`;
+  });
+};
+
+// profile change form submitted!
+const updateProfileListener = () => {
+  $(`#edit-profile-btn`).click((e) => {
+    e.preventDefault();
+    let changes = {};
+
+    for (let i = 0; i < e.target.form.length; i++) {
+      if (e.target.form[i].value !== ``) {
+        changes[e.target.form[i].name] = e.target.form[i].value;
+      }
+    }
+
+    $.ajax({
+      data: changes,
+      method: `POST`,
+      success: () => { console.log(`profile updated`); },
+      url: `/edit`,
+    })
+    .done(() => {
+      window.location = `/profile`;  // redirect when finished!
+    });
   });
 };
 
@@ -24,4 +49,5 @@ $(document).ready(() => {
   });
 
   editProfileListener();
+  updateProfileListener();
 });

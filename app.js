@@ -13,6 +13,7 @@ const passport = require(`passport`);
 const session = require(`express-session`);
 const GitHubStrategy = require(`passport-github2`).Strategy;
 const db = require(`./db/api`);
+const https = require(`https`);
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -116,6 +117,42 @@ app.get(`/profile`, ensureAuthenticated, (req, res) => {
   res.render(`profile`, { user: req.user });
 });
 
+app.get(`/edit`, (req, res) => {
+  res.render(`edit`, { user: req.user });
+});
+
+app.post(`/edit`, (req, res, next) => {
+  const profileData = JSON.stringify(req.body);
+
+  db.getUser(req.user.username)
+  .then((user) => {
+    const options = {
+      headers: {
+        Authorization: `token ${user.token}`,
+        "User-Agent": `gittinit`,
+      },
+      hostname: `api.github.com`,
+      method: `POST`,
+      path: `/user`,
+    };
+    const request = https.request(options, (response) => {
+      let str = ``;
+      response.on(`error`, (err) => console.error(err));
+      response.on(`data`, (data) => str += data);
+      response.on(`end`, () => {
+        console.log(`done`, str);
+        req.session.passport.user._json.name = JSON.parse(str).name;
+        req.session.passport.user._json.company = JSON.parse(str).company;
+        req.session.passport.user._json.location = JSON.parse(str).location;
+        res.end();
+      });
+    });
+    request.write(profileData);
+    request.end();
+  })
+  .catch((err) => next(err));
+});
+
 app.get(`/login`, (req, res) => {
   res.render(`index`, { user: req.user });
 });
@@ -127,7 +164,7 @@ app.get(`/login`, (req, res) => {
 //   back to this application at /auth/github/callback
 app.get(`/auth/github`,
   passport.authenticate(`github`, { scope: process.env.SCOPE }),
-  (req, res) => { /* req redirect to GH for auth, this is unused */ }
+  (req, res) => { /* req will redirect to GH for auth, this is unused */ }
 );
 
 // GET /auth/github/callback
@@ -141,10 +178,10 @@ app.get(`/auth/github/callback`,
     res.redirect(`/`);
   });
 
-app.get(`/logout`, (req, res) => {
+app.get(`/logout`, (req, res, next) => {
   db.deleteUser(req.user.username)
   .then()
-  .catch((error) => console.error(error));
+  .catch((error) => next(error));
   req.logout();
   res.redirect(`/`);
 });
