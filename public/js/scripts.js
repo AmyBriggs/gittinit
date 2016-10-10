@@ -1,6 +1,10 @@
 'use strict';
 
-
+const editProfileListener = () => {
+  $(`#edit-profile`).click((e) => {
+    console.log(e);
+  });
+};
 
 console.log('hi');
 
@@ -16,5 +20,5 @@ $(document).ready(() => {
     console.log('clicked');
     window.location.href = `http://localhost:3000/logout`;
   });
-
+  editProfileListener();
 })
