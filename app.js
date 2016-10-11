@@ -129,6 +129,10 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 app.get(`/`, (req, res) => {
+  res.render(`splash`);
+});
+
+app.get(`/index`, (req, res) => {
   res.render(`index`, { g32ers, user: req.user });
 });
 
@@ -213,7 +217,7 @@ app.get(`/auth/github`, passport.authenticate(`github`, {
 app.get(`/auth/github/callback`,
   passport.authenticate(`github`, { failureRedirect: `/login` }),
   (req, res) => {
-    res.redirect(`/`);
+    res.render(`index`, { g32ers, user: req.user });
   });
 
 app.get(`/logout`, (req, res, next) => {
@@ -221,7 +225,7 @@ app.get(`/logout`, (req, res, next) => {
     .then()
     .catch((error) => next(error));
   req.logout();
-  res.render(`/`);
+  res.redirect(`/`);
 });
 
 // catch 404 and forward to error handler
