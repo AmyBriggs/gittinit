@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>Editing {{user.username}}</h3>
+  <h3 class="white-text">Editing {{user.username}}</h3>
   <form class="" name="edit-user-form" action="/profile" method="put" id="edit-profile-form">
     <div class="row">
       <div class="input-field col-sm-12">
@@ -14,7 +14,7 @@
         <label for="title">Company</label>
         <input class="input-field col-sm-12" name="company" type="text" placeholder="{{user._json.company}}">
       </div>
-      <button type="submit" id="edit-profile-btn" class="waves-effect waves-light btn-large">Submit</button>
+      <button type="submit" id="edit-profile-btn" class="waves-effect waves-light btn">Submit</button>
     </div>
   </form>
 </div>
