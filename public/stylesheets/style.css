@@ -5,13 +5,26 @@ body {
     background-size: 100%;
 }
 a {
-    color: #00B7FF;
+    /*color: #00B7FF;*/
+    color: #0422CC;
 }
 h3 {
     text-align: center;
     font-size: 24px;
     color: #0B112B;
+}
 
+#card-style {
+  border-radius: 5px;
+  background-color: #EDF1FA;
+}
+
+#username {
+  color: #0B112B;
+}
+
+p {
+  color: #0B112B;
 }
 
 .center-btn {
@@ -20,7 +33,8 @@ h3 {
 }
 
 .btn {
-  background-color: blue;
+  /*background-color: blue;*/
+  background-color: #0422CC;
 }
 .btn-large {
   background-color: blue;
