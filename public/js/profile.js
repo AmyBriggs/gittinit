@@ -10,14 +10,14 @@ $(document).ready(() => {
     $(`#repos`).empty();
 
     for (const repo of repos) {
-      const $col = $('<div class="col s12>"');
-      const $card = $('<div class="card hoverable>"');
-      const $content = $('<div class="card-content center>"');
-      const $title = $('<div class="card-title truncate>"');
-      // console.log(repo.name);
-      $title.attr(`href`, `${repo.url}`);
+      const $col = $('<div class="col s12">');
+      const $card = $('<div class="card hoverable">');
+      const $content = $('<div class="card-content">');
+      const $title = $('<div class="card-title truncate">');
+      console.log(repo.url);
       $title.text(repo.name);
-
+      $title.attr('href', 'http://www.google.com');
+      // $(`#repos`).append('hi');
       $content.append($title);
       $card.append($content);
       $col.append($card);
