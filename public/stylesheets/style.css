@@ -4,10 +4,11 @@ body {
     background-image: url("https://hd.unsplash.com/photo-1438986710423-1bf13038bc14");
     background-size: 100%;
 }
+
 a {
-    /*color: #00B7FF;*/
     color: #0422CC;
 }
+
 h3 {
     text-align: center;
     font-size: 24px;
@@ -15,7 +16,16 @@ h3 {
 }
 
 #card-style {
-  border-radius: 5px;
+  border-radius: 10px;
+  background-color: #EDF1FA;
+}
+
+.card .hoverable {
+  background-color: #EDF1FA;
+  border-radius: 10px;
+}
+
+#repos {
   background-color: #EDF1FA;
 }
 
@@ -33,9 +43,9 @@ p {
 }
 
 .btn {
-  /*background-color: blue;*/
   background-color: #0422CC;
 }
+
 .btn-large {
   background-color: blue;
 }
@@ -49,12 +59,15 @@ p {
 #buttons {
     align-items: center;
 }
+
 #login-button {
     align-items: center;
 }
+
 #logout-button {
     float: right;
 }
+
 #edit-profile {
   width: 120px;
   margin-bottom: 10px;
@@ -64,15 +77,14 @@ p {
   width: 120px;
   margin-bottom: 10px;
 }
+
 #home-profile {
   width: 120px;
   margin-bottom: 10px;
 }
+
 #edit-logout {
   width: 120px;
-}
-.hidden {
-    display: none;
 }
 
 /* Edit Profile Form */

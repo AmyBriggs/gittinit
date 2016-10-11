@@ -39,11 +39,11 @@ $(document).ready(() => {
     $(`#login-button`).addClass(`active`);
     window.location.href = `http://localhost:3000/auth/github`;
   });
-
-  if ($(`#login-button`).hasClass(`active`)) {
-    $(`login-button`).addClass(`hidden`);
-    $(`logout-button`).removeClass(`hidden`);
-  }
+  // 
+  // if ($(`#login-button`).hasClass(`active`)) {
+  //   $(`login-button`).addClass(`hidden`);
+  //   $(`logout-button`).removeClass(`hidden`);
+  // }
 
   $(`#logout-button`).click(function() {
     window.location.href = `http://localhost:3000/splash`;
