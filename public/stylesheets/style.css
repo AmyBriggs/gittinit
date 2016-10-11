@@ -39,6 +39,17 @@ h3 {
 #logout-button {
     float: right;
 }
+#edit-profile {
+  width: 120px;
+  margin-bottom: 10px;
+}
+#home-profile {
+  width: 120px;
+  margin-bottom: 10px;
+}
+#edit-logout {
+  width: 120px;
+}
 .hidden {
     display: none;
 }
