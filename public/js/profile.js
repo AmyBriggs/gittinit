@@ -3,7 +3,8 @@
 $(document).ready(() => {
   console.log("i am here");
 
-  const username = `mrcooper42`;
+  // const username = `mrcooper42`;
+  const username = $(`h3`).children(`a`).text();
   const repos = [];
   const renderRepos = () => {
     $(`#repos`).empty();

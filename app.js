@@ -136,11 +136,29 @@ app.get(`/splash`, (req, res) => {
   res.render(`splash`, { user: req.user });
 });
 
-app.get(`/profile`, ensureAuthenticated, (req, res) => {
-  res.render(`profile`, { /* TODO */ });
+app.get(`/profile/:username`, ensureAuthenticated, (req, res) => {
+  const request = require(`request`);
+
+  let username = req.params.username;
+  const options = {
+    headers: {
+      "User-Agent": `gittinit`,
+    },
+    url: `https://api.github.com/users/${username}`,
+  };
+
+  request(options, (err, resp, body) => {
+    if (err) { console.error(err); }
+    username = JSON.parse(body);
+    res.render(`profile`, { user: username });
+  });
 });
 
-app.get(`/edit`, (req, res) => {
+app.get(`/profile`, ensureAuthenticated, (req, res) => {
+  res.render(`profile`, { user: req.body });
+});
+
+app.get(`/edit`, ensureAuthenticated, (req, res) => {
   res.render(`edit`, { user: req.user });
 });
 
@@ -185,7 +203,7 @@ app.get(`/login`, (req, res) => {
 //   the user to github.com.  After authorization, GitHub will redirect the user
 //   back to this application at /auth/github/callback
 app.get(`/auth/github`, passport.authenticate(`github`, {
-  scope: process.env.SCOPE
+  scope: process.env.SCOPE,
 }), (req, res) => { /* req will redirect to GH for auth, this is unused */ });
 
 //   Use passport.authenticate() as route middleware to authenticate the
