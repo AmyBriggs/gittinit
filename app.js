@@ -14,6 +14,29 @@ const session = require(`express-session`);
 const GitHubStrategy = require(`passport-github2`).Strategy;
 const db = require(`./db/api`);
 const https = require(`https`);
+const g32ers = [
+  { login: `Alisuehobbs` },
+  { login: `ambaldwin21` },
+  { login: `AmyBriggs` },
+  { login: `BAMason` },
+  { login: `colechambers` },
+  { login: `courtneysanders418` },
+  { login: `craigquincy` },
+  { login: `David-H-152402` },
+  { login: `Dillie-Z` },
+  { login: `FreemanJamesH` },
+  { login: `gordonhgraham` },
+  { login: `kelseychapman` },
+  { login: `ksztengel` },
+  { login: `limawebdev1` },
+  { login: `mariajcb` },
+  { login: `MatieuB` },
+  { login: `mattlg24` },
+  { login: `MrCooper42` },
+  { login: `mworks4905` },
+  { login: `ScottyVG` },
+  { login: `elanalynn` },
+];
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -40,37 +63,32 @@ passport.use(new GitHubStrategy({
   clientSecret: process.env.CLIENT_SECRET,
 },
 (accessToken, refreshToken, profile, done) => {
-  // asynchronous verification, for effect...
   process.nextTick(() => {
-    // console.log(`accesssToken: ${accessToken}`);
-    // console.log(`refreshToken: ${refreshToken}`);
-    // console.log(`profile: ${profile}`);
-    db.getUser(profile.username).then((user) => {
-      if (user) {
-        db.editUser(profile.username, accessToken)
-        .then()
-        .catch((err) => console.error(err));
-      }
-      else {
-        db.createUser(profile.username, accessToken)
-        .then()
-        .catch((e) => console.error(e));
-      }
-    })
-    .catch((error) => console.error(error));
+    const updateDB = new Promise((resolve, reject) => {
+      db.getUser(profile.username).then((user) => {
+        if (user) {
+          db.editUser(profile.username, accessToken)
+          .then((result) => resolve(result))
+          .catch((err) => reject(err));
+        }
+        else {
+          db.createUser(profile.username, accessToken)
+          .then((result) => resolve(result))
+          .catch((e) => reject(e));
+        }
+      })
+      .catch((error) => reject(error));
+    });
 
     // To keep the example simple, the user's GitHub profile is returned to
     // represent the logged-in user.  In a typical application, you would want
     // to associate the GitHub account with a user record in your database,
     // and return that user instead.
-
-    return done(null, profile);
+    updateDB.then(() => { return done(null, profile); })
+    .catch((rejected) => console.error(rejected));
   });
 }
 ));
-
-// const routes = require(`./routes/index`);
-// const users = require(`./routes/users`);
 
 const app = express();
 
@@ -96,9 +114,6 @@ app.use(express.static(path.join(__dirname, `public`)));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use(`/`, routes);
-// app.use(`/users`, users);
-
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
 //   the request is authenticated (typically via a persistent login session),
@@ -110,7 +125,7 @@ const ensureAuthenticated = (req, res, next) => {
 };
 
 app.get(`/`, (req, res) => {
-  res.render(`index`, { user: req.user });
+  res.render(`index`, { g32ers, user: req.user });
 });
 
 app.get(`/profile`, ensureAuthenticated, (req, res) => {
@@ -138,13 +153,11 @@ app.post(`/edit`, (req, res, next) => {
     const request = https.request(options, (response) => {
       let str = ``;
       response.on(`error`, (err) => console.error(err));
-      response.on(`data`, (data) => str += data);
+      response.on(`data`, (data) => { str += data; });
       response.on(`end`, () => {
-        console.log(`done`, str);
         req.session.passport.user._json.name = JSON.parse(str).name;
         req.session.passport.user._json.company = JSON.parse(str).company;
         req.session.passport.user._json.location = JSON.parse(str).location;
-        res.end();
       });
     });
     request.write(profileData);
@@ -154,10 +167,9 @@ app.post(`/edit`, (req, res, next) => {
 });
 
 app.get(`/login`, (req, res) => {
-  res.render(`index`, { user: req.user });
+  res.render(`login`, { user: req.user });
 });
 
-// GET /auth/github
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  The first step in GitHub authentication will involve redirecting
 //   the user to github.com.  After authorization, GitHub will redirect the user
@@ -167,7 +179,6 @@ app.get(`/auth/github`,
   (req, res) => { /* req will redirect to GH for auth, this is unused */ }
 );
 
-// GET /auth/github/callback
 //   Use passport.authenticate() as route middleware to authenticate the
 //   request.  If authentication fails, the user will be redirected back to the
 //   login page.  Otherwise, the primary route function will be called,
