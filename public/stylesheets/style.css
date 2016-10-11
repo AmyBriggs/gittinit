@@ -8,10 +8,25 @@ a {
     color: #00B7FF;
 }
 h3 {
-    ;
     text-align: center;
-    font-size: 18px;
+    font-size: 24px;
 }
+
+.center-btn {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.btn {
+  background-color: blue;
+}
+
+.btn:hover {
+    background-color: #63C5E6;
+    border: none;
+    cursor: pointer;
+}
+
 #buttons {
     align-items: center;
 }
