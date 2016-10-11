@@ -113,6 +113,10 @@ app.get(`/`, (req, res) => {
   res.render(`index`, { user: req.user });
 });
 
+app.get(`/splash`, (req, res) => {
+  res.render(`splash`, { user: req.user });
+});
+
 app.get(`/profile`, ensureAuthenticated, (req, res) => {
   res.render(`profile`, { /* TODO */ });
 });
