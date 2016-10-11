@@ -1,28 +1,26 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    background-image: url("https://hd.unsplash.com/photo-1438986710423-1bf13038bc14");
+    background-size: 100%;
 }
-
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
-
 h3 {
-  text-align: center;
-  font-size: 18px;
+    ;
+    text-align: center;
+    font-size: 18px;
 }
-
 #buttons {
-  align-items: center;
+    align-items: center;
 }
-
 #login-button {
-  align-items: center;
+    align-items: center;
 }
 #logout-button {
-  align-items: center;
+    align-items: center;
 }
-
 .hidden {
-  display: none;
+    display: none;
 }
