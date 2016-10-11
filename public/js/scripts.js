@@ -20,14 +20,16 @@ const updateProfileListener = () => {
     }
 
     $.ajax({
-      data: changes,
-      method: `POST`,
-      success: () => { console.log(`profile updated`); },
-      url: `/edit`,
-    })
-    .done(() => {
-      window.location = `/`;  // redirect when finished!
-    });
+        data: changes,
+        method: `POST`,
+        success: () => {
+          console.log(`profile updated`);
+        },
+        url: `/edit`,
+      })
+      .done(() => {
+        window.location = `/`; // redirect when finished!
+      });
   });
 };
 

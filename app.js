@@ -1,7 +1,9 @@
 /* eslint-disable camelcase */
 'use strict';
 
-if (process.env.NODE_ENV !== `production`) { require(`dotenv`).config(); }
+if (process.env.NODE_ENV !== `production`) {
+  require(`dotenv`).config();
+}
 
 // const favicon = require(`serve-favicon`);
 const express = require(`express`);
@@ -35,38 +37,37 @@ passport.deserializeUser((obj, done) => {
 //   credentials (in this case, an accessToken, refreshToken, and GitHub
 //   profile), and invoke a callback with a user object.
 passport.use(new GitHubStrategy({
-  callbackURL: `http://localhost:3000/auth/github/callback`,
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-},
-(accessToken, refreshToken, profile, done) => {
-  // asynchronous verification, for effect...
-  process.nextTick(() => {
-    // console.log(`accesssToken: ${accessToken}`);
-    // console.log(`refreshToken: ${refreshToken}`);
-    // console.log(`profile: ${profile}`);
-    db.getUser(profile.username).then((user) => {
-      if (user) {
-        db.editUser(profile.username, accessToken)
-        .then()
-        .catch((err) => console.error(err));
-      }
-      else {
-        db.createUser(profile.username, accessToken)
-        .then()
-        .catch((e) => console.error(e));
-      }
-    })
-    .catch((error) => console.error(error));
+    callbackURL: `http://localhost:3000/auth/github/callback`,
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+  },
+  (accessToken, refreshToken, profile, done) => {
+    // asynchronous verification, for effect...
+    process.nextTick(() => {
+      // console.log(`accesssToken: ${accessToken}`);
+      // console.log(`refreshToken: ${refreshToken}`);
+      // console.log(`profile: ${profile}`);
+      db.getUser(profile.username).then((user) => {
+          if (user) {
+            db.editUser(profile.username, accessToken)
+              .then()
+              .catch((err) => console.error(err));
+          } else {
+            db.createUser(profile.username, accessToken)
+              .then()
+              .catch((e) => console.error(e));
+          }
+        })
+        .catch((error) => console.error(error));
 
-    // To keep the example simple, the user's GitHub profile is returned to
-    // represent the logged-in user.  In a typical application, you would want
-    // to associate the GitHub account with a user record in your database,
-    // and return that user instead.
+      // To keep the example simple, the user's GitHub profile is returned to
+      // represent the logged-in user.  In a typical application, you would want
+      // to associate the GitHub account with a user record in your database,
+      // and return that user instead.
 
-    return done(null, profile);
-  });
-}
+      return done(null, profile);
+    });
+  }
 ));
 
 // const routes = require(`./routes/index`);
@@ -82,7 +83,9 @@ app.set(`view engine`, `hbs`);
 // app.use(favicon(path.join(__dirname, `public`, `favicon.ico`)));
 app.use(logger(`dev`));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(cookieParser());
 app.use(session({
   resave: false,
@@ -105,12 +108,16 @@ app.use(passport.session());
 //   the request will proceed.  Otherwise, the user will be redirected to the
 //   login page.
 const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next(); }
+  if (req.isAuthenticated()) {
+    return next();
+  }
   res.redirect(`/login`);
 };
 
 app.get(`/`, (req, res) => {
-  res.render(`index`, { user: req.user });
+  res.render(`index`, {
+    user: req.user
+  });
 });
 
 app.get(`/splash`, (req, res) => {
@@ -122,43 +129,85 @@ app.get(`/profile`, ensureAuthenticated, (req, res) => {
 });
 
 app.get(`/edit`, (req, res) => {
-  res.render(`edit`, { user: req.user });
+  res.render(`edit`, {
+    user: req.user
+  });
 });
 
 app.post(`/edit`, (req, res, next) => {
   const profileData = JSON.stringify(req.body);
 
   db.getUser(req.user.username)
-  .then((user) => {
-    const options = {
-      headers: {
-        Authorization: `token ${user.token}`,
-        "User-Agent": `gittinit`,
-      },
-      hostname: `api.github.com`,
-      method: `POST`,
-      path: `/user`,
-    };
-    const request = https.request(options, (response) => {
-      let str = ``;
-      response.on(`error`, (err) => console.error(err));
-      response.on(`data`, (data) => str += data);
-      response.on(`end`, () => {
-        console.log(`done`, str);
-        req.session.passport.user._json.name = JSON.parse(str).name;
-        req.session.passport.user._json.company = JSON.parse(str).company;
-        req.session.passport.user._json.location = JSON.parse(str).location;
-        res.end();
+    .then((user) => {
+      const options = {
+        headers: {
+          Authorization: `token ${user.token}`,
+          "User-Agent": `gittinit`,
+        },
+        hostname: `api.github.com`,
+        method: `POST`,
+        path: `/user`,
+      };
+      const request = https.request(options, (response) => {
+        let str = ``;
+        response.on(`error`, (err) => console.error(err));
+        response.on(`data`, (data) => str += data);
+        response.on(`end`, () => {
+          console.log(`done`, str);
+          req.session.passport.user._json.name = JSON.parse(str).name;
+          req.session.passport.user._json.company = JSON.parse(str).company;
+          req.session.passport.user._json.location = JSON.parse(str).location;
+          res.end();
+        });
       });
-    });
-    request.write(profileData);
-    request.end();
-  })
-  .catch((err) => next(err));
+      request.write(profileData);
+      request.end();
+    })
+    .catch((err) => next(err));
+});
+
+app.get(`/edit`, (req, res) => {
+  res.render(`edit`, {
+    user: req.user
+  });
+});
+
+app.post(`/edit`, (req, res, next) => {
+  const profileData = JSON.stringify(req.body);
+
+  db.getUser(req.user.username)
+    .then((user) => {
+      const options = {
+        headers: {
+          Authorization: `token ${user.token}`,
+          "User-Agent": `gittinit`,
+        },
+        hostname: `api.github.com`,
+        method: `POST`,
+        path: `/user`,
+      };
+      const request = https.request(options, (response) => {
+        let str = ``;
+        response.on(`error`, (err) => console.error(err));
+        response.on(`data`, (data) => str += data);
+        response.on(`end`, () => {
+          console.log(`done`, str);
+          req.session.passport.user._json.name = JSON.parse(str).name;
+          req.session.passport.user._json.company = JSON.parse(str).company;
+          req.session.passport.user._json.location = JSON.parse(str).location;
+          res.end();
+        });
+      });
+      request.write(profileData);
+      request.end();
+    })
+    .catch((err) => next(err));
 });
 
 app.get(`/login`, (req, res) => {
-  res.render(`index`, { user: req.user });
+  res.render(`index`, {
+    user: req.user
+  });
 });
 
 // GET /auth/github
@@ -166,10 +215,9 @@ app.get(`/login`, (req, res) => {
 //   request.  The first step in GitHub authentication will involve redirecting
 //   the user to github.com.  After authorization, GitHub will redirect the user
 //   back to this application at /auth/github/callback
-app.get(`/auth/github`,
-  passport.authenticate(`github`, { scope: process.env.SCOPE }),
-  (req, res) => { /* req will redirect to GH for auth, this is unused */ }
-);
+app.get(`/auth/github`, passport.authenticate(`github`, {
+  scope: process.env.SCOPE
+}), (req, res) => { /* req will redirect to GH for auth, this is unused */ });
 
 // GET /auth/github/callback
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -177,15 +225,17 @@ app.get(`/auth/github`,
 //   login page.  Otherwise, the primary route function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get(`/auth/github/callback`,
-  passport.authenticate(`github`, { failureRedirect: `/login` }),
+  passport.authenticate(`github`, {
+    failureRedirect: `/login`
+  }),
   (req, res) => {
     res.redirect(`/`);
   });
 
 app.get(`/logout`, (req, res, next) => {
   db.deleteUser(req.user.username)
-  .then()
-  .catch((error) => next(error));
+    .then()
+    .catch((error) => next(error));
   req.logout();
   res.redirect(`/`);
 });
