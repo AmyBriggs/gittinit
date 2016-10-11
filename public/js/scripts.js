@@ -46,8 +46,12 @@ $(document).ready(() => {
   }
 
   $(`#logout-button`).click(function() {
-    window.location.href = `http://localhost:3000/logout`;
+    window.location.href = `http://localhost:3000/splash`;
   });
+
+  // $(`#logout-edit-btn`).click(function() {
+  //   window.location.href = `http://localhost:3000/splash`;
+  // });
 
   editProfileListener();
   updateProfileListener();

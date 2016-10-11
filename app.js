@@ -203,7 +203,7 @@ app.get(`/logout`, (req, res, next) => {
     .then()
     .catch((error) => next(error));
   req.logout();
-  res.redirect(`/`);
+  res.render(`/`);
 });
 
 // catch 404 and forward to error handler

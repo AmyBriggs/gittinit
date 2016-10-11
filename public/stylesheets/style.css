@@ -20,6 +20,9 @@ h3 {
 .btn {
   background-color: blue;
 }
+.btn-large {
+  background-color: blue;
+}
 
 .btn:hover {
     background-color: #63C5E6;
@@ -34,7 +37,7 @@ h3 {
     align-items: center;
 }
 #logout-button {
-    align-items: center;
+    float: right;
 }
 .hidden {
     display: none;
