@@ -162,6 +162,44 @@ app.post(`/edit`, (req, res, next) => {
     .catch((err) => next(err));
 });
 
+app.get(`/edit`, (req, res) => {
+  res.render(`edit`, {
+    user: req.user
+  });
+});
+
+app.post(`/edit`, (req, res, next) => {
+  const profileData = JSON.stringify(req.body);
+
+  db.getUser(req.user.username)
+    .then((user) => {
+      const options = {
+        headers: {
+          Authorization: `token ${user.token}`,
+          "User-Agent": `gittinit`,
+        },
+        hostname: `api.github.com`,
+        method: `POST`,
+        path: `/user`,
+      };
+      const request = https.request(options, (response) => {
+        let str = ``;
+        response.on(`error`, (err) => console.error(err));
+        response.on(`data`, (data) => str += data);
+        response.on(`end`, () => {
+          console.log(`done`, str);
+          req.session.passport.user._json.name = JSON.parse(str).name;
+          req.session.passport.user._json.company = JSON.parse(str).company;
+          req.session.passport.user._json.location = JSON.parse(str).location;
+          res.end();
+        });
+      });
+      request.write(profileData);
+      request.end();
+    })
+    .catch((err) => next(err));
+});
+
 app.get(`/login`, (req, res) => {
   res.render(`index`, {
     user: req.user
@@ -173,12 +211,9 @@ app.get(`/login`, (req, res) => {
 //   request.  The first step in GitHub authentication will involve redirecting
 //   the user to github.com.  After authorization, GitHub will redirect the user
 //   back to this application at /auth/github/callback
-app.get(`/auth/github`,
-  passport.authenticate(`github`, {
-    scope: process.env.SCOPE
-  }),
-  (req, res) => { /* req will redirect to GH for auth, this is unused */ }
-);
+app.get(`/auth/github`, passport.authenticate(`github`, {
+  scope: process.env.SCOPE
+}), (req, res) => { /* req will redirect to GH for auth, this is unused */ });
 
 // GET /auth/github/callback
 //   Use passport.authenticate() as route middleware to authenticate the
