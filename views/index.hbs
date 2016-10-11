@@ -1,15 +1,31 @@
-<left class="col s2">
-  <h3 class="center-align"><a href={{user.profileUrl}}>{{user.username}}</a></h3>
-  <img class="responsive-img" src={{user._json.avatar_url}} />
-  <p>Display Name: {{user._json.name}}</p>
-  <p>Located In: {{user._json.location}}</p>
-  <p>Company: {{user._json.company}}</p>
-  <p><a href={{user.profileUrl}}?tab=repositories>Repos:</a><br>
-  &nbsp;&nbsp;Public: {{user._json.public_repos}}<br>
-  &nbsp;&nbsp;Private: {{user._json.total_private_repos}}</p>
-  <p><a href={{user.profileUrl}}?tab=followers>Followers: </a>{{user._json.followers}}</p>
-  <p><a href={{user.profileUrl}}?tab=following>Following: </a>{{user._json.following}}</p>
-  <a class="waves-effect waves-light btn" id="edit-profile"><i class="material-icons right">mode_edit</i>Edit</a>
-</left>
-<right class="col s10">
-</right>
+  <left class="col s2">
+    <h3 class="center-align"><a href={{user.profileUrl}}>{{user.username}}</a></h3>
+    <img class="responsive-img" src= {{user._json.avatar_url}} />
+    <p>Display Name: {{user._json.name}}</p>
+    <p>Located In: {{user._json.location}}</p>
+    <p>Company: {{user._json.company}}</p>
+    <p><a href= {{user.profileUrl}} ?tab=repositories>Repos:</a>
+      <br> &nbsp;&nbsp;Public: {{user._json.public_repos}}
+      <br> &nbsp;&nbsp;Private: {{user._json.total_private_repos}}</p>
+      <p><a href= {{user.profileUrl}} ?tab=followers>Followers: </a>{{user._json.followers}}</p>
+      <p><a href= {{user.profileUrl}} ?tab=following>Following: </a>{{user._json.following}}</p>
+      <a class="waves-effect waves-light btn" id="edit-profile"><i class="material-icons right">mode_edit</i>Edit</a>
+    </left>
+    <right class="col s10">
+      <!-- Cards for team members -->
+      <div class="row">
+        <div class="col s6 m3">
+          <div class="card small">
+            <div class="card-image">
+              <img class="responsive-img" src={{user._json.avatar_url}} />
+            </div>
+            <h3 class="center-align"><a href={{user.profileUrl}}>{{user.username}}</a></h3>
+            <div class="card-action center-align">
+              <a href="#">{{user._json.name}}</a>
+            </div>
+          </div>
+        </div>
+        <div class="col s6 m3">
+        </div>
+      </right>
+</div>

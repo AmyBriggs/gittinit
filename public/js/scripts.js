@@ -46,7 +46,6 @@ $(document).ready(() => {
   }
 
   $(`#logout-button`).click(function() {
-    console.log(`clacked`);
     window.location.href = `http://localhost:3000/logout`;
   });
 
