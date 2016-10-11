@@ -163,9 +163,11 @@ app.post(`/edit`, (req, res, next) => {
       response.on(`error`, (err) => console.error(err));
       response.on(`data`, (data) => str += data);
       response.on(`end`, () => {
+        console.log(`done`, str);
         req.session.passport.user._json.name = JSON.parse(str).name;
         req.session.passport.user._json.company = JSON.parse(str).company;
         req.session.passport.user._json.location = JSON.parse(str).location;
+        res.end();
       });
     });
     request.write(profileData);
@@ -175,7 +177,7 @@ app.post(`/edit`, (req, res, next) => {
 });
 
 app.get(`/login`, (req, res) => {
-  res.render(`login`, { user: req.user });
+  res.render(`index`, { user: req.user });
 });
 
 //   Use passport.authenticate() as route middleware to authenticate the
