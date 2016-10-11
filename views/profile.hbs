@@ -1,20 +1,14 @@
-<profile class="row">
   <left class="col s2">
-    <h3 class="center-align">Welcome!</h3>
-    <img class="responsive-img" src={{user._json.avatar_url}} />
-    <p id="username"><a href={{user.profileUrl}}>{{user.username}}</a></p>
-    <p>Display Name: {{user._json.name}}</p>
-    <p>Located In: {{user._json.location}}</p>
-    <p>Company: {{user._json.company}}</p>
-    <p><a href={{user.profileUrl}}?tab=repositories>Repos:</a><br>
-    &nbsp;&nbsp;Public: {{user._json.public_repos}}<br>
-    &nbsp;&nbsp;Private: {{user._json.total_private_repos}}</p>
-    <p><a href={{user.profileUrl}}?tab=followers>Followers: </a>{{user._json.followers}}</p>
-    <p><a href={{user.profileUrl}}?tab=following>Following: </a>{{user._json.following}}</p>
-    <a class="waves-effect waves-light btn" id="edit-profile"><i class="material-icons right">mode_edit</i>Edit</a>
+    <h3 class="center-align"><a href=https://github.com/{{user.login}}>{{user.login}}</a></h3>
+    <img class="responsive-img" src={{user.avatar_url}} />
+    <p>Display Name: {{user.name}}</p>
+    <p>Located In: {{user.location}}</p>
+    <p>Company: {{user.company}}</p>
+    <p>Public Repos: <a href="https://github.com/{{user.login}}?tab=repositories">{{user.public_repos}}</a></p>
+    <p><a href="https://github.com/{{user.login}}?tab=followers">Followers: </a>{{user.followers}}</p>
+    <p><a href="https://github.com/{{user.login}}?tab=following">Following: </a>{{user.following}}</p>
   </left>
   <right class="col s10">
     <div id="repos"></div>
   </right>
-</profile>
-<script src="./js/profile.js"></script>
+<script src="../js/profile.js"></script>

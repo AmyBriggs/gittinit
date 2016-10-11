@@ -1,6 +1,6 @@
 'use strict';
 
-// edit button clicked!
+// profile edit button clicked!
 const editProfileListener = () => {
   $(`#edit-profile`).click((e) => {
     window.location.href = `/edit`;
@@ -11,7 +11,7 @@ const editProfileListener = () => {
 const updateProfileListener = () => {
   $(`#edit-profile-btn`).click((e) => {
     e.preventDefault();
-    let changes = {};
+    const changes = {};
 
     for (let i = 0; i < e.target.form.length; i++) {
       if (e.target.form[i].value !== ``) {
@@ -20,16 +20,16 @@ const updateProfileListener = () => {
     }
 
     $.ajax({
-        data: changes,
-        method: `POST`,
-        success: () => {
-          console.log(`profile updated`);
-        },
-        url: `/edit`,
-      })
-      .done(() => {
-        window.location = `/`; // redirect when finished!
-      });
+      data: changes,
+      method: `POST`,
+      success: () => {
+        console.log(`profile updated`);
+      },
+      url: `/edit`,
+    })
+    .done(() => {
+      window.location = `/`; // redirect when finished!
+    });
   });
 };
 
