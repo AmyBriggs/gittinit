@@ -5,7 +5,6 @@ $(document).ready(() => {
 
   const username = `mrcooper42`;
   const repos = [];
-  console.log(repos);
   const renderRepos = () => {
     $(`#repos`).empty();
 
@@ -14,11 +13,11 @@ $(document).ready(() => {
       const $card = $('<div class="card hoverable">');
       const $content = $('<div class="card-content">');
       const $title = $('<div class="card-title truncate">');
-      console.log(repo.url);
+      const $link = $('<a href="#">');
+      $link.attr('href', repo.url.replace(/api\./, ``).replace(/\/repos/, ``));
       $title.text(repo.name);
-      $title.attr('href', 'http://www.google.com');
-      // $(`#repos`).append('hi');
-      $content.append($title);
+      $link.append($title);
+      $content.append($link);
       $card.append($content);
       $col.append($card);
       $(`#repos`).append($col);
