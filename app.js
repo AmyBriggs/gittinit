@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable camelcase, max-len */
 'use strict';
 
 if (process.env.NODE_ENV !== `production`) {
@@ -16,6 +16,7 @@ const session = require(`express-session`);
 const GitHubStrategy = require(`passport-github2`).Strategy;
 const db = require(`./db/api`);
 const https = require(`https`);
+const moment = require(`moment`);
 let g32ers;
 db.getClass().then((result) => { g32ers = result; });
 
@@ -100,22 +101,54 @@ app.get(`/splash`, (req, res) => {
   res.render(`splash`, { user: req.user });
 });
 
-app.get(`/profile/:username`, ensureAuthenticated, (req, res) => {
+app.get(`/profile/:username`, ensureAuthenticated, (req, res, next) => {
   const request = require(`request`);
-
+  const user = req.user.username;
+  const repos = [];
+  let token;
   let username = req.params.username;
-  const options = {
-    headers: {
-      "User-Agent": `gittinit`,
-    },
-    url: `https://api.github.com/users/${username}`,
-  };
 
-  request(options, (err, resp, body) => {
-    if (err) { console.error(err); }
-    username = JSON.parse(body);
-    res.render(`profile`, { user: username });
-  });
+  db.getUser(user)
+  .then((result) => {
+    token = result.token;
+    const options = {
+      headers: {
+        Authorization: `token ${token}`,
+        "User-Agent": `gittinit`,
+      },
+      url: `https://api.github.com/users/${username}`,
+    };
+
+    request(options, (err, resp, body) => {
+      if (err) { console.error(err); }
+      username = JSON.parse(body);
+    });
+  })
+  .then(() => {
+    const options = {
+      headers: {
+        Authorization: `token ${token}`,
+        "User-Agent": `gittinit`,
+      },
+      url: `https://api.github.com/users/${username}/repos`,
+    };
+
+    request(options, (err, resp, body) => {
+      if (err) { console.error(err); }
+      const temp = JSON.parse(body);
+      temp.sort((a, b) => (b.pushed_at < a.pushed_at) ? -1 : ((b.pushed_at > a.pushed_at) ? 1 : 0));
+      temp.forEach((repo) => {
+        repos.push({
+          created_at: moment(repo.created_at).format(`M/DD/Y kk:mm:ss`),
+          html_url: repo.html_url,
+          name: repo.name,
+          pushed_at: moment(repo.pushed_at).format(`M/DD/Y k:mm:ss`),
+        });
+      });
+      res.render(`profile`, { repos, user: username });
+    });
+  })
+  .catch((err) => next(err));
 });
 
 app.get(`/profile`, ensureAuthenticated, (req, res) => {
