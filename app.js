@@ -31,7 +31,7 @@ passport.deserializeUser((obj, done) => {
 
 // Use the GitHubStrategy within Passport.
 passport.use(new GitHubStrategy({
-  callbackURL: `http://gittinit.herokuapp.com/auth/github/callback`,
+  callbackURL: `https://gittinit.herokuapp.com/auth/github/callback`,
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
 },
