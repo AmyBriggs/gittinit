@@ -36,6 +36,11 @@ h3 {
   background-color: #EDF1FA;
 }
 
+.card-image {
+  max-height: 75%;
+  max-width: 75%;
+  margin: auto;
+}
 
 /* User Profile */
 
