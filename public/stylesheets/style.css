@@ -5,6 +5,10 @@ body {
     background-size: cover;
 }
 
+.top-row {
+  font-family: 'Righteous', cursive;
+}
+
 #g {
   position: relative;
   top: 1em;
