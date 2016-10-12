@@ -1,8 +1,8 @@
   <left class="col s2">
-    <h3 class="center-align"><a href=https://github.com/{{user.login}}>{{user.login}}</a></h3>
+    <h3 class="center-align" id="profile-headers"><a href=https://github.com/{{user.login}}>{{user.login}}</a></h3>
     <img class="responsive-img" src={{user.avatar_url}} />
-    <p>Display Name: {{user.name}}</p>
-    <p>Located In: {{user.location}}</p>
+    <p>Name: {{user.name}}</p>
+    <p>Location: {{user.location}}</p>
     <p>Company: {{user.company}}</p>
     <p>Public Repos: <a href="https://github.com/{{user.login}}?tab=repositories">{{user.public_repos}}</a></p>
     <p><a href="https://github.com/{{user.login}}?tab=followers">Followers: </a>{{user.followers}}</p>
