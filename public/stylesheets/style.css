@@ -7,6 +7,7 @@ body {
 
 .splash {
   font-family: 'Righteous', cursive;
+  vertical-align: middle;
 }
 
 a {
