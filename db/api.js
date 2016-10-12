@@ -27,9 +27,14 @@ const deleteUser = (username) => {
   .del();
 };
 
+const getClass = () => {
+  return knex(`g32`);
+};
+
 module.exports = {
   createUser,
   deleteUser,
   editUser,
+  getClass,
   getUser,
 };
