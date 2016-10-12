@@ -33,6 +33,6 @@ $(document).ready(() => {
       }
       renderRepos();
     },
-    url: `https://api.github.com/users/${username}repos`,
+    url: `https://api.github.com/users/${username}/repos`,
   });
 });
