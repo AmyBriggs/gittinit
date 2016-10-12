@@ -17,7 +17,13 @@
     {{#each g32ers}}
       <div class="col s3 m3">
         <div class="card small" id="card-style">
-          <h3 class="center-align" id="gh-user-name"><a href='/profile/{{username}}'>{{username}}</a></h3>
+          <h3 class="center-align">{{name}}</h3>
+          <div class="card-image responsive-img">
+            <img src="{{avatar}}" alt="GitHub avatar" />
+          </div>
+          <div class="card-content">
+            <h3 class="center-align" id="gh-user-name"><a href='/profile/{{username}}'>{{username}}</a></h3>
+          </div>
         </div>
       </div>
     {{/each}}

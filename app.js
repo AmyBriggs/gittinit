@@ -16,29 +16,8 @@ const session = require(`express-session`);
 const GitHubStrategy = require(`passport-github2`).Strategy;
 const db = require(`./db/api`);
 const https = require(`https`);
-const g32ers = [
-  { username: `Alisuehobbs` },
-  { username: `ambaldwin21` },
-  { username: `AmyBriggs` },
-  { username: `BAMason` },
-  { username: `colechambers` },
-  { username: `courtneysanders418` },
-  { username: `craigquincy` },
-  { username: `David-H-152402` },
-  { username: `Dillie-Z` },
-  { username: `FreemanJamesH` },
-  { username: `gordonhgraham` },
-  { username: `kelseychapman` },
-  { username: `ksztengel` },
-  { username: `limawebdev1` },
-  { username: `mariajcb` },
-  { username: `MatieuB` },
-  { username: `mattlg24` },
-  { username: `MrCooper42` },
-  { username: `mworks4905` },
-  { username: `ScottyVG` },
-  { username: `elanalynn` },
-];
+let g32ers;
+db.getClass().then((result) => { g32ers = result; });
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -133,6 +112,7 @@ app.get(`/`, (req, res) => {
 });
 
 app.get(`/index`, (req, res) => {
+  console.log(g32ers);
   res.render(`index`, { g32ers, user: req.user });
 });
 
