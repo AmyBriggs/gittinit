@@ -139,6 +139,10 @@ input[type=text] {
   color: #0B112B;
 }
 
+.responsive-img {
+  border-radius: 25%;
+}
+
 #profile-headers {
   padding-top: 0%;
   font-size: 3vw;
