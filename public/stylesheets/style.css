@@ -2,7 +2,7 @@ body {
     padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background-image: url("https://hd.unsplash.com/photo-1438986710423-1bf13038bc14");
-    background-size: 100%;
+    background-size: cover;
 }
 
 a {
