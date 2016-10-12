@@ -11,18 +11,20 @@ a {
 
 h3 {
     text-align: center;
-    font-size: 24px;
+    /*font-size: 2vw;*/
     color: #0B112B;
 }
 
 #card-style {
-  border-radius: 10px;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  border-radius: 5%;
   background-color: #EDF1FA;
 }
 
 .card .hoverable {
   background-color: #EDF1FA;
-  border-radius: 10px;
+  border-radius: 10%;
 }
 
 #repos {
@@ -31,7 +33,11 @@ h3 {
 
 #username {
   color: #0B112B;
-  font-size: 18px;
+  font-size: 3vw;
+}
+
+#card-name {
+  font-size: 2.5vw;
 }
 
 p {
@@ -40,7 +46,7 @@ p {
 
 .center-btn {
     text-align: center;
-    margin-top: 50px;
+    /*margin-top: 10%;*/
 }
 
 .btn {
@@ -70,22 +76,22 @@ p {
 }
 
 #edit-profile {
-  width: 120px;
+  width: 100%;
   margin-bottom: 10px;
 }
 
 #edit-profile-btn {
-  width: 120px;
+  width: 100%;
   margin-bottom: 10px;
 }
 
 #home-profile {
-  width: 120px;
-  margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 5%;
 }
 
 #edit-logout {
-  width: 120px;
+  width: 100%;
 }
 
 /* Edit Profile Form */
@@ -119,11 +125,13 @@ input[type=text] {
 }
 
 #gh-user-name {
-  font-size: 18px;
+  margin-top: 2%;
+  font-size: 2vw;
   color: #0B112B;
 }
 
 #profile-headers {
-  font-size: 18px;
+  padding-top: 0%;
+  font-size: 1.8vw;
   color: #0B112B;
 }
