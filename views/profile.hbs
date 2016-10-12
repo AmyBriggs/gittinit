@@ -11,6 +11,9 @@
     <a class="waves-effect waves-light btn" id="profile-logout" href="/logout">Logout</a>
   </left>
   <right class="col s12 m9">
+    <div class="row">
+      <h1>Check out {{user.name}}'s repos!</h1>
+    </div>
     <div id="repos">
       {{#each repos}}
         <div class="col s12">
