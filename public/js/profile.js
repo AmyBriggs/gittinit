@@ -22,6 +22,8 @@ $(document).ready(() => {
       $card.append($content);
       $col.append($card);
       $(`#repos`).append($col);
+      $content.append('created on: ' + repo.created_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$3/$2/$1 $4:$5:$6"))
+      $content.append('<br>created on: ' + repo.updated_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$3/$2/$1 $4:$5:$6"))
     }
   };
   $.ajax({
