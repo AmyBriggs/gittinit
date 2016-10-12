@@ -18,7 +18,7 @@ $(document).ready(() => {
       const $content = $('<div class="card-content">');
       const $title = $('<div class="card-title truncate">');
       const $link = $('<a href="#">');
-      $link.attr('href', sort.url.replace(/api\./, ``).replace(/\/sorted/, ``));
+      $link.attr('href', sort.url.replace(/api\./, ``).replace(/\/repos/, ``));
       $title.text(sort.name);
       $link.append($title);
       $content.append($link);
