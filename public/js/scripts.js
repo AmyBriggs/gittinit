@@ -1,9 +1,24 @@
 'use strict';
 
+// login button clicked!
+const loginButtonListener = () => {
+  $(`#login-button`).click(() => {
+    $(`#login-button`).addClass(`active`);
+    window.location = `/auth/github`;
+  });
+};
+
+// logout button clicked!
+const logoutButtonListener = () => {
+  $(`#logout-button`).click(() => {
+    window.location = `/logout`;
+  });
+};
+
 // profile edit button clicked!
 const editProfileListener = () => {
-  $(`#edit-profile`).click((e) => {
-    window.location.href = `/edit`;
+  $(`#edit-profile`).click(() => {
+    window.location = `/edit`;
   });
 };
 
@@ -22,37 +37,15 @@ const updateProfileListener = () => {
     $.ajax({
       data: changes,
       method: `POST`,
-      success: () => {
-        console.log(`profile updated`);
-      },
       url: `/edit`,
     })
-    .done(() => {
-      window.location = `/index`; // redirect when finished!
-    });
+    .done(() => { window.location = `/index`; });
   });
 };
 
 $(document).ready(() => {
-  $(`#login-button`).click(function() {
-    console.log(`clicked`);
-    $(`#login-button`).addClass(`active`);
-    window.location.href = `http://localhost:3000/auth/github`;
-  });
-  // 
-  // if ($(`#login-button`).hasClass(`active`)) {
-  //   $(`login-button`).addClass(`hidden`);
-  //   $(`logout-button`).removeClass(`hidden`);
-  // }
-
-  $(`#logout-button`).click(function() {
-    window.location.href = `http://localhost:3000/splash`;
-  });
-
-  // $(`#logout-edit-btn`).click(function() {
-  //   window.location.href = `http://localhost:3000/splash`;
-  // });
-
+  loginButtonListener();
+  logoutButtonListener();
   editProfileListener();
   updateProfileListener();
 });
