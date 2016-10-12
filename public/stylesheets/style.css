@@ -31,6 +31,7 @@ h3 {
 
 #username {
   color: #0B112B;
+  font-size: 18px;
 }
 
 p {
@@ -115,4 +116,14 @@ input[type=text] {
 .input-field input[type=text]:focus {
   border-bottom: 1px solid blue;
   box-shadow: 0 1px 0 0 blue;
+}
+
+#gh-user-name {
+  font-size: 18px;
+  color: #0B112B;
+}
+
+#profile-headers {
+  font-size: 18px;
+  color: #0B112B;
 }
