@@ -8,7 +8,10 @@ $(document).ready(() => {
   const repos = [];
   const renderRepos = () => {
     $(`#repos`).empty();
-
+    const sorted = repos.sort((a, b) => {
+      (a.updated_at < b.updated_at) ? -1: ((a.updated_at > b.updated_at) ? 1 : 0);
+    });
+    console.log(sorted);
     for (const repo of repos) {
       const $col = $('<div class="col s12">');
       const $card = $('<div class="card hoverable">');
@@ -22,8 +25,8 @@ $(document).ready(() => {
       $card.append($content);
       $col.append($card);
       $(`#repos`).append($col);
-      $content.append('created on: ' + repo.created_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$3/$2/$1 $4:$5:$6"))
-      $content.append('<br>updated on: ' + repo.updated_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$3/$2/$1 $4:$5:$6"))
+      $content.append('updated on: ' + repo.updated_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
+      $content.append('<br>created on: ' + repo.created_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
     }
   };
   $.ajax({
