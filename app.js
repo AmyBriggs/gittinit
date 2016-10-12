@@ -18,7 +18,9 @@ const db = require(`./db/api`);
 const https = require(`https`);
 const moment = require(`moment`);
 let g32ers;
-db.getClass().then((result) => { g32ers = result; });
+db.getClass().then((result) => {
+  g32ers = result;
+});
 
 // Passport session setup.
 passport.serializeUser((user, done) => {
@@ -31,32 +33,33 @@ passport.deserializeUser((obj, done) => {
 
 // Use the GitHubStrategy within Passport.
 passport.use(new GitHubStrategy({
-  callbackURL: `https://gittinit.herokuapp.com/auth/github/callback`,
-  clientID: process.env.CLIENT_ID,
-  clientSecret: process.env.CLIENT_SECRET,
-},
-(accessToken, refreshToken, profile, done) => {
-  process.nextTick(() => {
-    const updateDB = new Promise((resolve, reject) => {
-      db.getUser(profile.username).then((user) => {
-        if (user) {
-          db.editUser(profile.username, accessToken)
-          .then((result) => resolve(result))
-          .catch((err) => reject(err));
-        }
-        else {
-          db.createUser(profile.username, accessToken)
-          .then((result) => resolve(result))
-          .catch((e) => reject(e));
-        }
-      })
-      .catch((error) => reject(error));
-    });
+    callbackURL: `https://gittinit.herokuapp.com/auth/github/callback`,
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+  },
+  (accessToken, refreshToken, profile, done) => {
+    process.nextTick(() => {
+      const updateDB = new Promise((resolve, reject) => {
+        db.getUser(profile.username).then((user) => {
+            if (user) {
+              db.editUser(profile.username, accessToken)
+                .then((result) => resolve(result))
+                .catch((err) => reject(err));
+            } else {
+              db.createUser(profile.username, accessToken)
+                .then((result) => resolve(result))
+                .catch((e) => reject(e));
+            }
+          })
+          .catch((error) => reject(error));
+      });
 
-    updateDB.then(() => { return done(null, profile); })
-    .catch((rejected) => console.error(rejected));
-  });
-}
+      updateDB.then(() => {
+          return done(null, profile);
+        })
+        .catch((rejected) => console.error(rejected));
+    });
+  }
 ));
 
 const app = express();
@@ -85,7 +88,9 @@ app.use(passport.session());
 
 // Simple route middleware to ensure user is authenticated.
 const ensureAuthenticated = (req, res, next) => {
-  if (req.isAuthenticated()) { return next(); }
+  if (req.isAuthenticated()) {
+    return next();
+  }
   res.redirect(`/splash`);
 };
 
@@ -94,11 +99,16 @@ app.get(`/`, (req, res) => {
 });
 
 app.get(`/index`, ensureAuthenticated, (req, res) => {
-  res.render(`index`, { g32ers, user: req.user });
+  res.render(`index`, {
+    g32ers,
+    user: req.user,
+  });
 });
 
 app.get(`/splash`, (req, res) => {
-  res.render(`splash`, { user: req.user });
+  res.render(`splash`, {
+    user: req.user,
+  });
 });
 
 app.get(`/profile/:username`, ensureAuthenticated, (req, res, next) => {
@@ -109,89 +119,104 @@ app.get(`/profile/:username`, ensureAuthenticated, (req, res, next) => {
   let username = req.params.username;
 
   db.getUser(user)
-  .then((result) => {
-    token = result.token;
-    const options = {
-      headers: {
-        Authorization: `token ${token}`,
-        "User-Agent": `gittinit`,
-      },
-      url: `https://api.github.com/users/${username}`,
-    };
+    .then((result) => {
+      token = result.token;
+      const options = {
+        headers: {
+          Authorization: `token ${token}`,
+          "User-Agent": `gittinit`,
+        },
+        url: `https://api.github.com/users/${username}`,
+      };
 
-    request(options, (err, resp, body) => {
-      if (err) { console.error(err); }
-      username = JSON.parse(body);
-    });
-  })
-  .then(() => {
-    const options = {
-      headers: {
-        Authorization: `token ${token}`,
-        "User-Agent": `gittinit`,
-      },
-      url: `https://api.github.com/users/${username}/repos`,
-    };
+      request(options, (err, resp, body) => {
+        if (err) {
+          console.error(err);
+        }
+        username = JSON.parse(body);
+      });
+    })
+    .then(() => {
+      const options = {
+        headers: {
+          Authorization: `token ${token}`,
+          "User-Agent": `gittinit`,
+        },
+        url: `https://api.github.com/users/${username}/repos`,
+      };
 
-    request(options, (err, resp, body) => {
-      if (err) { console.error(err); }
-      const temp = JSON.parse(body);
-      temp.sort((a, b) => (b.pushed_at < a.pushed_at) ? -1 : ((b.pushed_at > a.pushed_at) ? 1 : 0));
-      temp.forEach((repo) => {
-        repos.push({
-          created_at: moment(repo.created_at).format(`M/DD/Y kk:mm:ss`),
-          html_url: repo.html_url,
-          name: repo.name,
-          pushed_at: moment(repo.pushed_at).format(`M/DD/Y k:mm:ss`),
+      request(options, (err, resp, body) => {
+        if (err) {
+          console.error(err);
+        }
+        const temp = JSON.parse(body);
+        temp.sort((a, b) => (b.pushed_at < a.pushed_at) ? -1 : ((b.pushed_at > a.pushed_at) ? 1 : 0));
+        temp.forEach((repo) => {
+          repos.push({
+            created_at: moment(repo.created_at).format(`M/DD/Y kk:mm:ss`),
+            html_url: repo.html_url,
+            name: repo.name,
+            pushed_at: moment(repo.pushed_at).format(`M/DD/Y k:mm:ss`),
+          });
+        });
+        res.render(`profile`, {
+          repos,
+          user: username,
         });
       });
-      res.render(`profile`, { repos, user: username });
-    });
-  })
-  .catch((err) => next(err));
+    })
+    .catch((err) => next(err));
 });
 
 app.get(`/profile`, ensureAuthenticated, (req, res) => {
-  res.render(`profile`, { user: req.body });
+  res.render(`profile`, {
+    user: req.body,
+  });
 });
 
 app.get(`/edit`, ensureAuthenticated, (req, res) => {
-  res.render(`edit`, { user: req.user });
+  res.render(`edit`, {
+    user: req.user,
+  });
 });
 
 app.post(`/edit`, ensureAuthenticated, (req, res, next) => {
   const profileData = JSON.stringify(req.body);
 
   db.getUser(req.user.username)
-  .then((user) => {
-    const options = {
-      headers: {
-        Authorization: `token ${user.token}`,
-        "User-Agent": `gittinit`,
-      },
-      hostname: `api.github.com`,
-      method: `POST`,
-      path: `/user`,
-    };
-    const request = https.request(options, (response) => {
-      let str = ``;
-      response.on(`error`, (err) => console.error(err));
-      response.on(`data`, (data) => { str += data; });
-      response.on(`end`, () => {
-        req.session.passport.user._json.name = JSON.parse(str).name;
-        req.session.passport.user._json.company = JSON.parse(str).company;
-        req.session.passport.user._json.location = JSON.parse(str).location;
-        res.end();
+    .then((user) => {
+      const options = {
+        headers: {
+          Authorization: `token ${user.token}`,
+          "User-Agent": `gittinit`,
+        },
+        hostname: `api.github.com`,
+        method: `POST`,
+        path: `/user`,
+      };
+      const request = https.request(options, (response) => {
+        let str = ``;
+        response.on(`error`, (err) => console.error(err));
+        response.on(`data`, (data) => {
+          str += data;
+        });
+        response.on(`end`, () => {
+          req.session.passport.user._json.name = JSON.parse(str).name;
+          req.session.passport.user._json.company = JSON.parse(str).company;
+          req.session.passport.user._json.location = JSON.parse(str).location;
+          res.end();
+        });
       });
-    });
-    request.write(profileData);
-    request.end();
-  })
-  .catch((err) => next(err));
+      request.write(profileData);
+      request.end();
+    })
+    .catch((err) => next(err));
 });
 
-app.get(`/login`, (req, res) => {
-  res.render(`index`, { user: req.user });
+app.get(`/login`, ensureAuthenticated, (req, res) => {
+  res.render(`index`, {
+    user: req.user,
+  });
 });
 
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -207,11 +232,18 @@ app.get(`/auth/github`, passport.authenticate(`github`, {
 //   login page.  Otherwise, the primary route function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get(`/auth/github/callback`,
-  passport.authenticate(`github`, { failureRedirect: `/login` }),
-  (req, res) => { res.render(`index`, { g32ers, user: req.user }); }
+  passport.authenticate(`github`, {
+    failureRedirect: `/login`,
+  }),
+  (req, res) => {
+    res.render(`index`, {
+      g32ers,
+      user: req.user,
+    });
+  }
 );
 
-app.get(`/logout`, (req, res, next) => {
+app.get(`/logout`, ensureAuthenticated, (req, res, next) => {
   db.deleteUser(req.user.username)
     .then()
     .catch((error) => next(error));

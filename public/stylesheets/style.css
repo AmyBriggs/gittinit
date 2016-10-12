@@ -5,6 +5,11 @@ body {
     background-size: cover;
 }
 
+#g {
+  position: relative;
+  top: 12px;
+}
+
 .splash {
   font-family: 'Righteous', cursive;
   vertical-align: middle;
