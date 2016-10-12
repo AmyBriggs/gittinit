@@ -12,21 +12,21 @@ $(document).ready(() => {
       (a.updated_at < b.updated_at) ? -1: ((a.updated_at > b.updated_at) ? 1 : 0);
     });
     console.log(sorted);
-    for (const repo of repos) {
+    for (const sort of sorted) {
       const $col = $('<div class="col s12">');
       const $card = $('<div class="card hoverable">');
       const $content = $('<div class="card-content">');
       const $title = $('<div class="card-title truncate">');
       const $link = $('<a href="#">');
-      $link.attr('href', repo.url.replace(/api\./, ``).replace(/\/repos/, ``));
-      $title.text(repo.name);
+      $link.attr('href', sort.url.replace(/api\./, ``).replace(/\/sorted/, ``));
+      $title.text(sort.name);
       $link.append($title);
       $content.append($link);
       $card.append($content);
       $col.append($card);
       $(`#repos`).append($col);
-      $content.append('updated on: ' + repo.updated_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
-      $content.append('<br>created on: ' + repo.created_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
+      $content.append('updated on: ' + sort.updated_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
+      $content.append('<br>created on: ' + sort.created_at.replace(/(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+)Z/, "$2/$3/$1 $4:$5:$6"))
     }
   };
   $.ajax({
