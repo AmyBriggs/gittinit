@@ -15,8 +15,19 @@
   <right class="col m9 s12">
     <!-- Cards for team members -->
     {{#each g32ers}}
-      <div class="col s12 m6 l4 flow-text">
+      <div class="col hide-on-med-and-down l4 flow-text">
         <div class="card medium center-align" id="card-style">
+          <h3 class="center-align" id="card-name">{{name}}</h3>
+          <div class="card-image responsive-img">
+            <img src="{{avatar}}" alt="GitHub avatar" />
+          </div>
+          <div class="card-content">
+            <h3 class="center-align" id="gh-user-name"><a href='/profile/{{username}}'>{{username}}</a></h3>
+          </div>
+        </div>
+      </div>
+      <div class="col hide-on-large s12 m6 flow-text">
+        <div class="card small center-align" id="card-style">
           <h3 class="center-align" id="card-name">{{name}}</h3>
           <div class="card-image responsive-img">
             <img src="{{avatar}}" alt="GitHub avatar" />
